@@ -203,7 +203,6 @@ export default function App() {
         console.log('isRunning right after click: ', isRunning);
         setIsRunning(true);
         console.log('isRunning after setIsRunning: ', isRunning);
-        // sortingAlgoToRun();
       }
     
       React.useEffect(() => {
@@ -226,7 +225,7 @@ export default function App() {
             height: `${value * 4}px`
         }
 
-        return <div style={styles} key={index} className="arrayEl">{value}</div>
+        return <div style={styles} key={index} className="arrayEl">{value}</div> 
     })
 
     return (

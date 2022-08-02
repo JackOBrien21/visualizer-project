@@ -86,9 +86,8 @@ export default function App() {
             if(isRunning) {
                 isSwapped = false;               
                 for(let j = 0; j < n; j++) {
-                    if(newArray[j] > newArray[j + 1]) {
-                        await swap(newArray, j, j+1)
-                        isSwapped = true;
+                    if (isRunning) {
+                        if(newArray[j] > newArray[j + 1]) {
                             await swap(newArray, j, j+1)
                             isSwapped = true;
                         }

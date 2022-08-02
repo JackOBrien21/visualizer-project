@@ -81,23 +81,29 @@ export default function App() {
         const newArray = [...array]
         let n = newArray.length
         let isSwapped = false
-        if (isRunning) {
-            for(let i =0; i < n; i++) {               
+        for(let i =0; i < n; i++) {  
+            console.log("isRunning during buble", isRunning)        
+            if(isRunning) {
                 isSwapped = false;               
                 for(let j = 0; j < n; j++) {
                     if(newArray[j] > newArray[j + 1]) {
                         await swap(newArray, j, j+1)
                         isSwapped = true;
+                            await swap(newArray, j, j+1)
+                            isSwapped = true;
+                        }
+                        setArray([...newArray])
+                    } else {
+                        return
                     }
-                setArray([...newArray])
                 }
                 if(!isSwapped) {
                     break;
                 }
-            }
-        } else {
-            return
-        }           
+            } else {
+                return
+            }                
+        }
     }
 
     async function quickSort() {
@@ -165,15 +171,46 @@ export default function App() {
     }
 
     function stopAlgo() {
-        setIsRunning(false)
+        setIsRunning(() => {
+            const result = false
+            return result
+        })
+    }
+    
+
+    // React.useEffect(() => {
+    //     if (isRunning) {
+    //       sortingAlgoToRun();
+    //     } else {
+    //       return;
+    //     }
+    //   }, [isRunning]);
+
+    
+    function handleAlgoFunctionCall() {
+        console.log("top", isRunning)
+        setIsRunning( isRunning => {
+            const newIsRunning = true
+            return newIsRunning
+        })
+        console.log("under", isRunning)
+        //sortingAlgoToRun()
     }
 
     function handleAlgoFunctionCall() {
-        console.log("isRunning right after click: ", isRunning)
-        setIsRunning(true)
-        console.log("isRunning after setIsRunning: ", isRunning)
-        sortingAlgoToRun()
-    }
+        console.log('isRunning right after click: ', isRunning);
+        setIsRunning(true);
+        console.log('isRunning after setIsRunning: ', isRunning);
+        // sortingAlgoToRun();
+      }
+    
+      React.useEffect(() => {
+        if (isRunning) {
+          sortingAlgoToRun();
+        } else {
+          return;
+        }
+      }, [isRunning]);
 
 
     const arrayEls = array.map( (value, index) => {

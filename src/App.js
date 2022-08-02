@@ -6,10 +6,10 @@ export default function App() {
 
     const[isShown, setIsShown] = React.useState(true)
     const[array, setArray] = React.useState(generateArray())
-    const [selectedTab, setSelectedTab] = React.useState(-1)
+    const[selectedTab, setSelectedTab] = React.useState(-1)
     const[isRunning, setIsRunning] = React.useState(false)
 
-    console.log("selectedAlgo:", selectedTab)
+    console.log("isRunningTopApp:", isRunning)
 
     let sortingAlgoToRun = ""
     if (selectedTab !== -1) {
@@ -70,33 +70,34 @@ export default function App() {
             }
             if (min !== i) {
                 await swap(newArray, min , i)
-                console.log("during sort", newArray)
             }
             setArray([...newArray])
         }
-        console.log("after sort: ", newArray)
     }
 
 
     async function bubbleSort() {
-        console.log("bubble is running", isRunning)
+        console.log("isRunning bubble beginning ", isRunning)
         const newArray = [...array]
         let n = newArray.length
-        let isSwapped = false            
-        for(let i =0; i < n; i++){               
+        let isSwapped = false
+        if (isRunning) {
+            for(let i =0; i < n; i++) {               
                 isSwapped = false;               
-                for(let j = 0; j < n; j++){
-                    if(newArray[j] > newArray[j + 1]){
-                    await swap(newArray, j, j+1)
-                    isSwapped = true;
+                for(let j = 0; j < n; j++) {
+                    if(newArray[j] > newArray[j + 1]) {
+                        await swap(newArray, j, j+1)
+                        isSwapped = true;
                     }
                 setArray([...newArray])
                 }
-                if(!isSwapped){
-                break;
+                if(!isSwapped) {
+                    break;
+                }
             }
-        }
-    
+        } else {
+            return
+        }           
     }
 
     async function quickSort() {
@@ -142,12 +143,6 @@ export default function App() {
         }
     }
 
-    async function slowShift(index, newArray) {
-        await delay(1000)
-        newArray[index+1] = newArray[index]
-        setArray([...newArray])
-    }
-
     async function insertionSort() {
         const newArray = [...array]
         console.log("before sort: ", newArray)
@@ -163,12 +158,20 @@ export default function App() {
         }
     }
 
+    async function slowShift(index, newArray) {
+        await delay(1000)
+        newArray[index+1] = newArray[index]
+        setArray([...newArray])
+    }
+
     function stopAlgo() {
         setIsRunning(false)
     }
 
     function handleAlgoFunctionCall() {
+        console.log("isRunning right after click: ", isRunning)
         setIsRunning(true)
+        console.log("isRunning after setIsRunning: ", isRunning)
         sortingAlgoToRun()
     }
 
@@ -185,8 +188,6 @@ export default function App() {
 
         return <div style={styles} key={index} className="arrayEl">{value}</div>
     })
-
-    console.log("isRunning now", isRunning)
 
     return (
         <div className="app">

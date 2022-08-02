@@ -57,8 +57,6 @@ export default function Toolbar(props) {
     })
 
 
-    console.log("toolbar rendered")
-
     return (
         <div className="toolbar">
             <div className="generate-array" onClick={props.handleNewArray}>

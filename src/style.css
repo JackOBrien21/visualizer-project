@@ -1,0 +1,82 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: #F5f5f5;
+}
+
+.main {
+    background-color: white;
+    height: 600px;
+    width: 900px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.toolbar {
+    height: 100px;
+    width: 100%;
+    background-color: #282D35;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 40px;
+}
+
+.generate-array {
+    font-size: 16px;
+    font-weight: 500;
+    color: #00D8FF;
+    margin-right: 35px;
+    cursor: pointer;
+}
+
+.algorithms {
+    display: flex;
+    margin-right: 30px;
+}
+
+.toolbar--other--buttons {
+    color: #00D8FF;
+    display: flex;
+    margin-right: 20px;
+    margin-left: auto;
+    cursor: pointer;
+}
+
+.start--and--stop {
+    display: flex;
+}
+
+.sort--button {
+    color: rgb(247, 156, 70);
+    display: flex;
+    margin-right: auto;
+    padding-right: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.sort--button:hover {
+    text-decoration: underline;
+}
+
+.stop--button {
+    color: red;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.stop--button:hover {
+    text-decoration: underline;
+}

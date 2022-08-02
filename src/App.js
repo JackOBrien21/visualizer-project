@@ -8,6 +8,7 @@ export default function App() {
     const[array, setArray] = React.useState(generateArray())
     const[selectedTab, setSelectedTab] = React.useState(-1)
     const[isRunning, setIsRunning] = React.useState(false)
+    const isRunningRef = React.useRef(isRunning)
 
     console.log("isRunningTopApp:", isRunning)
 
@@ -81,11 +82,11 @@ export default function App() {
         const newArray = [...array]
         let n = newArray.length
         let isSwapped = false
-        for(let i =0; i < n; i++) {  
+        for(let i =0; i < n && isRunningRef.current; i++) {  
             console.log("isRunning during buble", isRunning)        
             if(isRunning) {
                 isSwapped = false;               
-                for(let j = 0; j < n; j++) {
+                for(let j = 0; j < n && isRunningRef.current; j++) {
                     if (isRunning) {
                         if(newArray[j] > newArray[j + 1]) {
                             await swap(newArray, j, j+1)
@@ -196,6 +197,8 @@ export default function App() {
         //sortingAlgoToRun()
     }
 
+
+
     function handleAlgoFunctionCall() {
         console.log('isRunning right after click: ', isRunning);
         setIsRunning(true);
@@ -204,6 +207,7 @@ export default function App() {
       }
     
       React.useEffect(() => {
+        isRunningRef.current = isRunning
         if (isRunning) {
           sortingAlgoToRun();
         } else {

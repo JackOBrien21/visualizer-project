@@ -41,6 +41,10 @@ body {
     cursor: pointer;
 }
 
+.arrayEl {
+   color: red; 
+}
+
 .algorithms {
     display: flex;
     margin-right: 30px;

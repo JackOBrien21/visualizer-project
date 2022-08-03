@@ -66,7 +66,7 @@ export default function Toolbar(props) {
                 {algoTabEls}
             </div>
             <div className="start--and--stop">
-                {!allNotSelected && <div className="sort--button" onClick={props.handleSort}> Sort! </div>}
+                {(!allNotSelected && props.showStop) || <div className="sort--button" onClick={props.handleSort}> Sort! </div>}
                 {props.showStop && <div className="stop--button" onClick={props.handleStop}> Stop! </div>}
             </div>
             <div className="toolbar--other--buttons" onClick={props.handleSwapFirstLast}>

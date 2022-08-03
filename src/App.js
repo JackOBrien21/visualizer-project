@@ -10,6 +10,8 @@ export default function App() {
     const[isRunning, setIsRunning] = React.useState(false)
     const isRunningRef = React.useRef(isRunning)
 
+    const speed = 500 // half second per swap
+
     console.log("isRunningTopApp:", isRunning)
 
     let sortingAlgoToRun = ""
@@ -46,7 +48,7 @@ export default function App() {
     }
 
     async function swap(arr, i, j) {
-        await delay(1000)
+        await delay(speed)
         let tmp = arr[i]
         arr[i] = arr[j]
         arr[j] = tmp
@@ -62,9 +64,9 @@ export default function App() {
         const newArray = [...array]
         let n = newArray.length
 
-        for (let i = 0; i < n; i++) {
+        for (let i = 0; i < n && isRunningRef.current; i++) {
             let min = i
-            for (let j = i+1; j < n; j++) {
+            for (let j = i+1; j < n && isRunningRef.current; j++) {
                 if (newArray[j] < newArray[min]) {
                     min = j
                 }
@@ -84,25 +86,17 @@ export default function App() {
         let isSwapped = false
         for(let i =0; i < n && isRunningRef.current; i++) {  
             console.log("isRunning during buble", isRunning)        
-            if(isRunning) {
-                isSwapped = false;               
-                for(let j = 0; j < n && isRunningRef.current; j++) {
-                    if (isRunning) {
-                        if(newArray[j] > newArray[j + 1]) {
-                            await swap(newArray, j, j+1)
-                            isSwapped = true;
-                        }
-                        setArray([...newArray])
-                    } else {
-                        return
-                    }
+            isSwapped = false;               
+            for(let j = 0; j < n && isRunningRef.current; j++) {
+                if(newArray[j] > newArray[j + 1]) {
+                    await swap(newArray, j, j+1)
+                    isSwapped = true;
                 }
-                if(!isSwapped) {
-                    break;
-                }
-            } else {
-                return
-            }                
+                setArray([...newArray])
+            }
+            if(!isSwapped) {
+                break;
+            }
         }
     }
 
@@ -114,7 +108,7 @@ export default function App() {
     async function quickSortHelper(arr, lo, hi) {
         console.log("lo: ", lo)
         console.log("hi: ", hi)
-        if (lo < hi) {
+        if (lo < hi && isRunningRef.current) {
             let p = await twoFingerPart(arr, lo, hi);
             await quickSortHelper(arr, lo, p);
             await quickSortHelper(arr, p+1, hi);
@@ -128,7 +122,7 @@ export default function App() {
         let pivVal = arr[lo];
         let i = lo - 1;
         let j = hi + 1;
-        while (true) {
+        while (true && isRunningRef.current) {
             do {
                 j--;
             }while (arr[j] > pivVal);
@@ -152,10 +146,10 @@ export default function App() {
     async function insertionSort() {
         const newArray = [...array]
         console.log("before sort: ", newArray)
-        for (let i = 1; i < newArray.length; i++) {
+        for (let i = 1; i < newArray.length && isRunningRef.current; i++) {
             let key = newArray[i]
             let j = i-1
-            while (j >= 0 && newArray[j] > key) {
+            while (j >= 0 && newArray[j] > key && isRunningRef.current) {
                 await slowShift(j, newArray)
                 j--
             }
@@ -165,7 +159,7 @@ export default function App() {
     }
 
     async function slowShift(index, newArray) {
-        await delay(1000)
+        await delay(speed)
         newArray[index+1] = newArray[index]
         setArray([...newArray])
     }
@@ -218,6 +212,12 @@ export default function App() {
     const arrayEls = array.map( (value, index) => {
 
         const styles = {
+            display: "flex",
+            textAlign: "center",
+            color: "red",
+            borderColor: "black",
+            borderStyle: "solid",
+            borderWidth: "1px",
             backgroundColor: "blue",
             display: "inline-block",
             margin: "10px",

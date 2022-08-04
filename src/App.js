@@ -43,6 +43,10 @@ export default function App() {
         }
     }, [isRunning]);
 
+    React.useEffect( () => {
+        setIsRunning(false)
+    }, [selectedTab])
+
     const mainStyles = {
         backgroundColor: "white",
         height: mainHeight,
@@ -65,6 +69,8 @@ export default function App() {
             sortingAlgoToRun = insertionSort
         } else if (selectedTab === 4) {
             sortingAlgoToRun = bogoSort
+        } else if (selectedTab === 5) {
+            sortingAlgoToRun = heapSort
         }
     }
 
@@ -94,6 +100,7 @@ export default function App() {
     }
 
     function generateNewRandomArray() {
+        setIsRunning(false)
         setArray(generateRandomArray())
     }
 
@@ -102,6 +109,7 @@ export default function App() {
         const tmp = copy[copy.length-1]
         copy[copy.length-1] = copy[0]
         copy[0] = tmp
+        setIsSorted(() => sorted(copy))
         setArray(copy)
     }
 
@@ -225,6 +233,12 @@ export default function App() {
         }
     }
 
+    async function slowShift(index, newArray) {
+        await delay(speed)
+        newArray[index+1] = newArray[index]
+        setArray([...newArray])
+    }
+
     async function bogoSort() {
         const newArray = [...array]
         while (!isSortedRef.current && isRunningRef.current) {
@@ -236,7 +250,6 @@ export default function App() {
 
     async function getRandPerm() {
         if (!isSortedRef.current && isRunningRef.current) {
-            console.log("!isSorted", !isSorted)
             const newArray = await shuffle(array)
             setIsSorted(() => sorted(newArray))
             setArray([...newArray])
@@ -269,10 +282,48 @@ export default function App() {
         return true
     }
 
-    async function slowShift(index, newArray) {
-        await delay(speed)
-        newArray[index+1] = newArray[index]
-        setArray([...newArray])
+    async function heapify(newArray, size, index) {
+        if (isRunningRef.current) {
+            let leftIndex = index*2+1
+            let rightIndex = index*2+2
+            let largest
+            
+            if (leftIndex < size && newArray[leftIndex] > newArray[index]) {
+                largest = leftIndex
+            } else {
+                largest = index
+            }
+            if (rightIndex < size && newArray[rightIndex] > newArray[largest]) {
+                largest = rightIndex
+            }
+            if (largest != index && isRunningRef.current) {
+                await swap(newArray, index, largest)
+                setArray([...newArray])
+                await heapify(newArray, size, largest)
+            }
+            return;
+        }
+    }
+
+    async function heapSort() {
+        const newArray = [...array]
+        console.log('here')
+        await buildHeap(newArray);
+        // Swaps the first and the ith position, where i is the remaining size-1 of the array
+        for (let i = newArray.length-1; i > 0 && isRunningRef.current; i--) {
+            await swap(newArray, 0, i)
+            setIsSorted(() => sorted(newArray))
+            setArray([...newArray])
+            await heapify(newArray, i, 0)
+        }
+        return
+    }
+
+    async function buildHeap(newArray) {
+        for (let i = Math.floor((newArray.length/2) -1); i >= 0 && isRunningRef.current; i--) {
+            await heapify(newArray, newArray.length, i)
+        }
+        return
     }
 
     function stopAlgo() {

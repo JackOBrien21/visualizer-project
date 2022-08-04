@@ -23,5 +23,10 @@ export default [
         name: "BOGO Sort",
         id: 4,
         isSelectedTab: false
+    },
+    {
+        name: "Heap Sort",
+        id: 5,
+        isSelectedTab: false
     }
 ]

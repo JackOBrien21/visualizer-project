@@ -225,6 +225,7 @@ export default function App() {
     async function bogoSort() {
         const newArray = [...array]
         while (!isSortedRef.current && isRunningRef.current) {
+            console.log("doing")
             await delay(speed)
             await getRandPerm()
         }

@@ -15,7 +15,7 @@ export default [
         isSelectedTab: false
     },
     {
-        name: "Heap Sort",
+        name: "Insertion Sort",
         id: 3,
         isSelectedTab: false
     },

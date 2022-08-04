@@ -16,15 +16,15 @@ export default function App() {
     const isSortedRef = React.useRef(isSorted)
 
 
-    React.useEffect( () => {
-        isSortedRef.current = isSorted
-        setIsSorted( () => sorted(array))
-    }, [array])
-
     const widthOfArrayEls = 26
     const mainWidth = windowWidth*2/3
     const mainHeight = mainWidth*2/3
     const maxNumberOfArrayEls = Math.floor(mainWidth/widthOfArrayEls) - 1
+
+    React.useEffect( () => {
+        isSortedRef.current = isSorted
+        setIsSorted( () => sorted(array))
+    }, [array]);
 
     React.useEffect( () => {
         function watchWidth() {
@@ -34,7 +34,16 @@ export default function App() {
         return function() {
             window.removeEventListener("resize", watchWidth)
         }
-    }, [])
+    }, []);
+
+    React.useEffect(() => {
+        isRunningRef.current = isRunning
+        if (isRunning) {
+            sortingAlgoToRun();
+        } else {
+            return;
+        }
+    }, [isRunning]);
 
     const mainStyles = {
         backgroundColor: "white",
@@ -279,14 +288,7 @@ export default function App() {
         setIsRunning(true);
     }
     
-    React.useEffect(() => {
-        isRunningRef.current = isRunning
-        if (isRunning) {
-            sortingAlgoToRun();
-        } else {
-            return;
-        }
-    }, [isRunning]);
+    
 
     const arrayEls = array.map( (value, index) => {
 

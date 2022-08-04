@@ -1,36 +1,7 @@
 import React from "react"
-import algorithms from "../SortingAlgos/algorithms.js"
+import algorithms from "../AlgoList/algorithms.js"
 
 export default function Toolbar(props) {
-
-    const algorithms = [
-        {
-            name: "Bubble Sort",
-            id: 0,
-            isSelectedTab: false
-        },
-        {
-            name: "Selection Sort",
-            id: 1,
-            isSelectedTab: false
-        },
-        {
-            name: "Quick Sort",
-            id: 2,
-            isSelectedTab: false
-        },
-        {
-            name: "Insertion Sort",
-            id: 3,
-            isSelectedTab: false
-        },
-        {
-            name: "BOGO Sort",
-            id: 4,
-            isSelectedTab: false
-        }
-    ]
-
     
 
     const [algoTabs, setAlgoTabs] = React.useState(algorithms)

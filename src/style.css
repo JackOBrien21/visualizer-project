@@ -7,13 +7,21 @@ body {
     background-color: #F5f5f5;
 }
 
-.main {
+/* .main {
     background-color: white;
     height: 600px;
     width: 900px;
     display: flex;
     justify-content: center;
     align-items: center;
+} */
+
+.slider--container {
+    display: flex;
+}
+
+.slider--range {
+    color: #00D8FF;
 }
 
 .app {

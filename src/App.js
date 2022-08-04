@@ -5,14 +5,41 @@ import Main from "./components/Main"
 export default function App() {
 
     const[isShown, setIsShown] = React.useState(true)
-    const[array, setArray] = React.useState(generateArray())
+    const[array, setArray] = React.useState(generateFirstArray())
     const[selectedTab, setSelectedTab] = React.useState(-1)
     const[isRunning, setIsRunning] = React.useState(false)
+    const[windowWidth, setWindowWidth] = React.useState(window.innerWidth)
     const isRunningRef = React.useRef(isRunning)
 
-    const speed = 500 // half second per swap
+    const isSorted = sorted(array)
 
-    console.log("isRunningTopApp:", isRunning)
+    const widthOfArrayEls = 26
+    const mainWidth = windowWidth*2/3
+    const mainHeight = mainWidth*2/3
+
+    const maxNumberOfArrayEls = Math.floor(mainWidth/widthOfArrayEls) - 1
+
+    React.useEffect( () => {
+        function watchWidth() {
+            setWindowWidth(window.innerWidth)
+        }
+        window.addEventListener("resize", watchWidth)
+        return function() {
+            window.removeEventListener("resize", watchWidth)
+        }
+    }, [])
+
+    const mainStyles = {
+        backgroundColor: "white",
+        height: mainHeight,
+        width: mainWidth,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        marginBottom: "25px"
+    }
+
+    const speed = 250 // quarter second per swap
 
     let sortingAlgoToRun = ""
     if (selectedTab !== -1) {
@@ -24,19 +51,37 @@ export default function App() {
             sortingAlgoToRun = quickSort
         } else if (selectedTab === 3) {
             sortingAlgoToRun = insertionSort
+        } else if (selectedTab === 4) {
+            sortingAlgoToRun = bogoSort
         }
     }
 
-    function generateArray() {
+    function generateFirstArray() {
+        const initialNumberOfArrayEls = 14
         const newArray = []
-        for (let i = 0; i < 10; i++) {
-            newArray.push(Math.ceil(Math.random() * 100))
+        for (let i = 0; i < initialNumberOfArrayEls; i++) {
+            newArray.push(getRandomInt(10, 100))
         }
         return newArray
     }
 
-    function generateNewArray() {
-        setArray(generateArray())
+    function generateRandomArray() {
+        const sliderEl = document.getElementById("vol")
+        const newArray = []
+        for (let i = 0; i < sliderEl.value; i++) {
+            newArray.push(getRandomInt(10, 150))
+        }
+        return newArray
+    }
+
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+    }
+
+    function generateNewRandomArray() {
+        setArray(generateRandomArray())
     }
 
     function changeArray() {
@@ -58,6 +103,10 @@ export default function App() {
         return new Promise(resolve => {
             setTimeout(resolve, milliseconds);
         });
+    }
+
+    function handleSliderChange() {
+        setArray(generateRandomArray())
     }
 
     async function selectionSort() {
@@ -106,8 +155,6 @@ export default function App() {
     }
 
     async function quickSortHelper(arr, lo, hi) {
-        console.log("lo: ", lo)
-        console.log("hi: ", hi)
         if (lo < hi && isRunningRef.current) {
             let p = await twoFingerPart(arr, lo, hi);
             await quickSortHelper(arr, lo, p);
@@ -118,7 +165,6 @@ export default function App() {
     }
 
     async function twoFingerPart(arr, lo, hi) {
-        console.log("here")
         let pivVal = arr[lo];
         let i = lo - 1;
         let j = hi + 1;
@@ -145,7 +191,6 @@ export default function App() {
 
     async function insertionSort() {
         const newArray = [...array]
-        console.log("before sort: ", newArray)
         for (let i = 1; i < newArray.length && isRunningRef.current; i++) {
             let key = newArray[i]
             let j = i-1
@@ -156,6 +201,46 @@ export default function App() {
             newArray[j+1] = key
             setArray([...newArray])
         }
+    }
+
+    async function bogoSort() {
+        const newArray = [...array]
+        while (!isSorted && isRunningRef.current) {
+            await delay(speed)
+            await getRandPerm()
+        }
+        return
+    }
+
+    async function getRandPerm() {
+        const newArray = await shuffle(array)
+        setArray([...newArray])
+    }
+
+    async function shuffle(arr){
+        const newArray = [...array]
+        var count = newArray.length, temp, index;
+
+        while(count > 0  && isRunningRef.current){
+            index = Math.floor(Math.random() * count);
+            count--;
+
+            temp = newArray[count];
+            newArray[count] = newArray[index];
+            newArray[index] = temp;
+        }
+        return newArray;
+    }
+
+    function sorted(shuffle) {
+        for (var i = 0; i < shuffle.length - 1; i++) {
+          if (shuffle[i] <= shuffle[i + 1]) {
+            continue;
+          } else {
+            return false;
+          }
+        }
+        return true
     }
 
     async function slowShift(index, newArray) {
@@ -172,31 +257,17 @@ export default function App() {
     }
     
 
-    // React.useEffect(() => {
-    //     if (isRunning) {
-    //       sortingAlgoToRun();
-    //     } else {
-    //       return;
-    //     }
-    //   }, [isRunning]);
 
     
     function handleAlgoFunctionCall() {
-        console.log("top", isRunning)
         setIsRunning( isRunning => {
             const newIsRunning = true
             return newIsRunning
         })
-        console.log("under", isRunning)
-        //sortingAlgoToRun()
     }
 
-
-
     function handleAlgoFunctionCall() {
-        console.log('isRunning right after click: ', isRunning);
         setIsRunning(true);
-        console.log('isRunning after setIsRunning: ', isRunning);
       }
     
       React.useEffect(() => {
@@ -211,16 +282,20 @@ export default function App() {
 
     const arrayEls = array.map( (value, index) => {
 
+        const len = array.length
+
+        const totalWidthOfArrayEls = array.length*26
+
         const styles = {
             display: "flex",
             textAlign: "center",
-            color: "red",
+            color: "yellow",
             borderColor: "black",
             borderStyle: "solid",
-            borderWidth: "1px",
+            borderWidth: ".5px",
             backgroundColor: "blue",
             display: "inline-block",
-            margin: "10px",
+            margin: "3px",
             width: "20px",
             height: `${value * 4}px`
         }
@@ -230,8 +305,8 @@ export default function App() {
 
     return (
         <div className="app">
-            <Toolbar handleNewArray={generateNewArray} handleSwapFirstLast={changeArray} handleSort={handleAlgoFunctionCall} selectedTab={selectedTab} setSelectedTab={setSelectedTab} showStop={isRunning} handleStop={stopAlgo}/>
-            <Main showTag={isShown} nums={arrayEls}/>
+            <Toolbar handleNewArray={generateNewRandomArray} handleSwapFirstLast={changeArray} handleSort={handleAlgoFunctionCall} selectedTab={selectedTab} setSelectedTab={setSelectedTab} showStop={isRunning} handleStop={stopAlgo} maxNumberOfArrayEls={maxNumberOfArrayEls} sliderChange={handleSliderChange}/>
+            <Main style={mainStyles} showTag={isShown} nums={arrayEls}/>
         </div>
     )
 }

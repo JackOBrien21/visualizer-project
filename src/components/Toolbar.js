@@ -23,8 +23,15 @@ export default function Toolbar(props) {
             name: "Insertion Sort",
             id: 3,
             isSelectedTab: false
+        },
+        {
+            name: "BOGO Sort",
+            id: 4,
+            isSelectedTab: false
         }
     ]
+
+    
 
     const [algoTabs, setAlgoTabs] = React.useState(algorithms)
 
@@ -62,6 +69,10 @@ export default function Toolbar(props) {
             <div className="generate-array" onClick={props.handleNewArray}>
                 Generate New Array
             </div>
+            <form className="slider--container">
+                <label className="slider--range" for="vol">Number of elements to sort (between 1 and {props.maxNumberOfArrayEls}):</label>
+                <input className="slider" onChange={props.sliderChange} type="range" id="vol" name="vol" min="1" max={props.maxNumberOfArrayEls} />
+            </form>
             <div className="algorithms">
                 {algoTabEls}
             </div>

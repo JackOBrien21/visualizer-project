@@ -4,7 +4,7 @@ export default function Main(props) {
 
     return (
         <div style={props.style} className="main">
-            {props.showTag && props.nums}    
+            {props.showTag && props.nums}  
         </div>
     )
 }

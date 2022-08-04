@@ -69,15 +69,21 @@ export default function Toolbar(props) {
             <div className="generate-array" onClick={props.handleNewArray}>
                 Generate New Array
             </div>
-            <form className="slider--container">
-                <label className="slider--range" for="vol">Number of elements to sort (between 1 and {props.maxNumberOfArrayEls}):</label>
-                <input className="slider" onChange={props.sliderChange} type="range" id="vol" name="vol" min="1" max={props.maxNumberOfArrayEls} />
-            </form>
+            <div className="sliders">
+                <form className="number--slider--container">
+                    <label className="number--slider--range" for="vol">Number of elements to sort (between 1 and {props.maxNumberOfArrayEls}): {props.length} </label>
+                    <input className="number--slider" onChange={props.numberSliderChange} type="range" id="num" name="num" min="1" max={props.maxNumberOfArrayEls} />
+                </form>
+                <form className="speed--slider--container">
+                    <label className="speed--slider--range" for="vol">Number of swaps / second (between 1 and 50): {Math.floor(1000 / props.speed)}</label>
+                    <input className="speed--slider" onChange={props.speedSliderChange} type="range" id="speed" name="speed" min="1" max="50" />
+                </form>
+            </div>
             <div className="algorithms">
                 {algoTabEls}
             </div>
             <div className="start--and--stop">
-                {(!allNotSelected && props.showStop) || <div className="sort--button" onClick={props.handleSort}> Sort! </div>}
+                {(!allNotSelected || props.showStop) && <div className="sort--button" onClick={props.handleSort}> Sort! </div>}
                 {props.showStop && <div className="stop--button" onClick={props.handleStop}> Stop! </div>}
             </div>
             <div className="toolbar--other--buttons" onClick={props.handleSwapFirstLast}>

@@ -16,12 +16,28 @@ body {
     align-items: center;
 } */
 
-.slider--container {
+.number--slider--container {
     display: flex;
 }
 
-.slider--range {
+.number--slider--range {
     color: #00D8FF;
+    width: 330px;
+    margin-right: 5px;
+}
+
+.speed--slider--container {
+    display: flex;
+}
+
+.speed--slider--range {
+    color: #00D8FF;
+    width: 330px;
+    margin-right: 5px;
+}
+
+.sliders {
+    margin-right: 5px;
 }
 
 .app {

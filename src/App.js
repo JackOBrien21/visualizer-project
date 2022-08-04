@@ -9,15 +9,18 @@ export default function App() {
     const[selectedTab, setSelectedTab] = React.useState(-1)
     const[isRunning, setIsRunning] = React.useState(false)
     const[windowWidth, setWindowWidth] = React.useState(window.innerWidth)
+    const[speed, setSpeed] = React.useState(250)
     const isRunningRef = React.useRef(isRunning)
-
     const isSorted = sorted(array)
+
+    console.log("isSorted", isSorted)
 
     const widthOfArrayEls = 26
     const mainWidth = windowWidth*2/3
     const mainHeight = mainWidth*2/3
 
     const maxNumberOfArrayEls = Math.floor(mainWidth/widthOfArrayEls) - 1
+
 
     React.useEffect( () => {
         function watchWidth() {
@@ -39,7 +42,6 @@ export default function App() {
         marginBottom: "25px"
     }
 
-    const speed = 250 // quarter second per swap
 
     let sortingAlgoToRun = ""
     if (selectedTab !== -1) {
@@ -66,9 +68,9 @@ export default function App() {
     }
 
     function generateRandomArray() {
-        const sliderEl = document.getElementById("vol")
+        const numSliderEl = document.getElementById("num")
         const newArray = []
-        for (let i = 0; i < sliderEl.value; i++) {
+        for (let i = 0; i < numSliderEl.value; i++) {
             newArray.push(getRandomInt(10, 150))
         }
         return newArray
@@ -105,8 +107,14 @@ export default function App() {
         });
     }
 
-    function handleSliderChange() {
+    function handleNumberSliderChange() {
         setArray(generateRandomArray())
+    }
+
+    function handleSpeedSliderChange() {
+        const speedSliderEl = document.getElementById("speed")
+        const speedSliderElVal = speedSliderEl.value
+        setSpeed(Math.floor(1000 / speedSliderElVal))
     }
 
     async function selectionSort() {
@@ -221,7 +229,7 @@ export default function App() {
         const newArray = [...array]
         var count = newArray.length, temp, index;
 
-        while(count > 0  && isRunningRef.current){
+        while(count > 0  && isRunningRef.current && !isSorted){
             index = Math.floor(Math.random() * count);
             count--;
 
@@ -270,14 +278,14 @@ export default function App() {
         setIsRunning(true);
       }
     
-      React.useEffect(() => {
+    React.useEffect(() => {
         isRunningRef.current = isRunning
         if (isRunning) {
-          sortingAlgoToRun();
+            sortingAlgoToRun();
         } else {
-          return;
+            return;
         }
-      }, [isRunning]);
+    }, [isRunning]);
 
 
     const arrayEls = array.map( (value, index) => {
@@ -293,7 +301,7 @@ export default function App() {
             borderColor: "black",
             borderStyle: "solid",
             borderWidth: ".5px",
-            backgroundColor: "blue",
+            backgroundColor: isSorted ? "red" : "blue",
             display: "inline-block",
             margin: "3px",
             width: "20px",
@@ -305,7 +313,7 @@ export default function App() {
 
     return (
         <div className="app">
-            <Toolbar handleNewArray={generateNewRandomArray} handleSwapFirstLast={changeArray} handleSort={handleAlgoFunctionCall} selectedTab={selectedTab} setSelectedTab={setSelectedTab} showStop={isRunning} handleStop={stopAlgo} maxNumberOfArrayEls={maxNumberOfArrayEls} sliderChange={handleSliderChange}/>
+            <Toolbar handleNewArray={generateNewRandomArray} handleSwapFirstLast={changeArray} handleSort={handleAlgoFunctionCall} selectedTab={selectedTab} setSelectedTab={setSelectedTab} showStop={isRunning} handleStop={stopAlgo} maxNumberOfArrayEls={maxNumberOfArrayEls} numberSliderChange={handleNumberSliderChange} speedSliderChange={handleSpeedSliderChange} speed={speed} mainWidth={mainWidth} widthOfArrayEls={widthOfArrayEls} length = {array.length}/>
             <Main style={mainStyles} showTag={isShown} nums={arrayEls}/>
         </div>
     )

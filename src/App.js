@@ -13,14 +13,10 @@ export default function App() {
     const isRunningRef = React.useRef(isRunning)
     const isSorted = sorted(array)
 
-    console.log("isSorted", isSorted)
-
     const widthOfArrayEls = 26
     const mainWidth = windowWidth*2/3
     const mainHeight = mainWidth*2/3
-
     const maxNumberOfArrayEls = Math.floor(mainWidth/widthOfArrayEls) - 1
-
 
     React.useEffect( () => {
         function watchWidth() {
@@ -41,7 +37,6 @@ export default function App() {
         alignItems: "center",
         marginBottom: "25px"
     }
-
 
     let sortingAlgoToRun = ""
     if (selectedTab !== -1) {
@@ -134,7 +129,6 @@ export default function App() {
             setArray([...newArray])
         }
     }
-
 
     async function bubbleSort() {
         console.log("isRunning bubble beginning ", isRunning)
@@ -264,9 +258,6 @@ export default function App() {
         })
     }
     
-
-
-    
     function handleAlgoFunctionCall() {
         setIsRunning( isRunning => {
             const newIsRunning = true
@@ -287,11 +278,9 @@ export default function App() {
         }
     }, [isRunning]);
 
-
     const arrayEls = array.map( (value, index) => {
 
         const len = array.length
-
         const totalWidthOfArrayEls = array.length*26
 
         const styles = {

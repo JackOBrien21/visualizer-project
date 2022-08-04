@@ -10,21 +10,15 @@ export default function App() {
     const[isRunning, setIsRunning] = React.useState(false)
     const[windowWidth, setWindowWidth] = React.useState(window.innerWidth)
     const[speed, setSpeed] = React.useState(250)
-    const[isSorted, setIsSorted] = React.useState(sorted(array))
     const isRunningRef = React.useRef(isRunning)
-
+    const isSortedInitial = sorted(array)
+    const[isSorted, setIsSorted] = React.useState(isSortedInitial)
     const isSortedRef = React.useRef(isSorted)
-
 
     const widthOfArrayEls = 26
     const mainWidth = windowWidth*2/3
     const mainHeight = mainWidth*2/3
     const maxNumberOfArrayEls = Math.floor(mainWidth/widthOfArrayEls) - 1
-
-    React.useEffect( () => {
-        isSortedRef.current = isSorted
-        setIsSorted( () => sorted(array))
-    }, [array]);
 
     React.useEffect( () => {
         function watchWidth() {
@@ -35,6 +29,10 @@ export default function App() {
             window.removeEventListener("resize", watchWidth)
         }
     }, []);
+
+    React.useEffect( () => {
+        isSortedRef.current = isSorted
+    }, [isSorted])
 
     React.useEffect(() => {
         isRunningRef.current = isRunning
@@ -85,6 +83,7 @@ export default function App() {
         for (let i = 0; i < numSliderEl.value; i++) {
             newArray.push(getRandomInt(10, 150))
         }
+        setIsSorted(() => sorted(newArray))
         return newArray
     }
 
@@ -143,6 +142,7 @@ export default function App() {
             if (min !== i) {
                 await swap(newArray, min , i)
             }
+            setIsSorted(() => sorted(newArray))
             setArray([...newArray])
         }
     }
@@ -160,6 +160,7 @@ export default function App() {
                     await swap(newArray, j, j+1)
                     isSwapped = true;
                 }
+                setIsSorted(() => sorted(newArray))
                 setArray([...newArray])
             }
             if(!isSwapped) {
@@ -202,6 +203,7 @@ export default function App() {
             } else {
                 return j;
             }
+            setIsSorted(() => sorted(arr))
             setArray([...arr])
             // i keeps incrementing while arr[i] <= pivVal)
             // j keeps decrementing while pivVal <= arr[j])
@@ -218,6 +220,7 @@ export default function App() {
                 j--
             }
             newArray[j+1] = key
+            setIsSorted(() => sorted(newArray))
             setArray([...newArray])
         }
     }
@@ -225,7 +228,6 @@ export default function App() {
     async function bogoSort() {
         const newArray = [...array]
         while (!isSortedRef.current && isRunningRef.current) {
-            console.log("doing")
             await delay(speed)
             await getRandPerm()
         }
@@ -234,7 +236,9 @@ export default function App() {
 
     async function getRandPerm() {
         if (!isSortedRef.current && isRunningRef.current) {
+            console.log("!isSorted", !isSorted)
             const newArray = await shuffle(array)
+            setIsSorted(() => sorted(newArray))
             setArray([...newArray])
         }
     }

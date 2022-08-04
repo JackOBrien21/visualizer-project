@@ -10,8 +10,16 @@ export default function App() {
     const[isRunning, setIsRunning] = React.useState(false)
     const[windowWidth, setWindowWidth] = React.useState(window.innerWidth)
     const[speed, setSpeed] = React.useState(250)
+    const[isSorted, setIsSorted] = React.useState(sorted(array))
     const isRunningRef = React.useRef(isRunning)
-    const isSorted = sorted(array)
+
+    const isSortedRef = React.useRef(isSorted)
+
+
+    React.useEffect( () => {
+        isSortedRef.current = isSorted
+        setIsSorted( () => sorted(array))
+    }, [array])
 
     const widthOfArrayEls = 26
     const mainWidth = windowWidth*2/3
@@ -207,7 +215,7 @@ export default function App() {
 
     async function bogoSort() {
         const newArray = [...array]
-        while (!isSorted && isRunningRef.current) {
+        while (!isSortedRef.current && isRunningRef.current) {
             await delay(speed)
             await getRandPerm()
         }
@@ -215,15 +223,17 @@ export default function App() {
     }
 
     async function getRandPerm() {
-        const newArray = await shuffle(array)
-        setArray([...newArray])
+        if (!isSortedRef.current && isRunningRef.current) {
+            const newArray = await shuffle(array)
+            setArray([...newArray])
+        }
     }
 
     async function shuffle(arr){
         const newArray = [...array]
         var count = newArray.length, temp, index;
 
-        while(count > 0  && isRunningRef.current && !isSorted){
+        while(count > 0  && isRunningRef.current && !isSortedRef.current) {
             index = Math.floor(Math.random() * count);
             count--;
 
@@ -267,7 +277,7 @@ export default function App() {
 
     function handleAlgoFunctionCall() {
         setIsRunning(true);
-      }
+    }
     
     React.useEffect(() => {
         isRunningRef.current = isRunning

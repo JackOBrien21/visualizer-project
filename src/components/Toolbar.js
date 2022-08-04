@@ -6,9 +6,6 @@ export default function Toolbar(props) {
 
     const [algoTabs, setAlgoTabs] = React.useState(algorithms)
 
-    // want algoTabs.every(isSelectedTab) == false -> render normally
-    // if there is one that is true -> render it differently then others
-
     function selectTab(index) {
         props.setSelectedTab(index)
         setAlgoTabs( (prevAlgoTabs) => {

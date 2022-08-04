@@ -74,6 +74,12 @@ export default function App() {
         }
     }
 
+    async function delay(milliseconds) {
+        return new Promise(resolve => {
+            setTimeout(resolve, milliseconds);
+        });
+    }
+
     function generateFirstArray() {
         const initialNumberOfArrayEls = 14
         const newArray = []
@@ -93,15 +99,15 @@ export default function App() {
         return newArray
     }
 
+    function generateNewRandomArray() {
+        setIsRunning(false)
+        setArray(generateRandomArray())
+    }
+
     function getRandomInt(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-    }
-
-    function generateNewRandomArray() {
-        setIsRunning(false)
-        setArray(generateRandomArray())
     }
 
     function changeArray() {
@@ -113,19 +119,6 @@ export default function App() {
         setArray(copy)
     }
 
-    async function swap(arr, i, j) {
-        await delay(speed)
-        let tmp = arr[i]
-        arr[i] = arr[j]
-        arr[j] = tmp
-    }
-
-    async function delay(milliseconds) {
-        return new Promise(resolve => {
-            setTimeout(resolve, milliseconds);
-        });
-    }
-
     function handleNumberSliderChange() {
         setArray(generateRandomArray())
     }
@@ -134,6 +127,13 @@ export default function App() {
         const speedSliderEl = document.getElementById("speed")
         const speedSliderElVal = speedSliderEl.value
         setSpeed(Math.floor(1000 / speedSliderElVal))
+    }
+
+    async function swap(arr, i, j) {
+        await delay(speed)
+        let tmp = arr[i]
+        arr[i] = arr[j]
+        arr[j] = tmp
     }
 
     async function selectionSort() {
@@ -344,12 +344,7 @@ export default function App() {
         setIsRunning(true);
     }
     
-    
-
     const arrayEls = array.map( (value, index) => {
-
-        const len = array.length
-        const totalWidthOfArrayEls = array.length*26
 
         const styles = {
             display: "flex",

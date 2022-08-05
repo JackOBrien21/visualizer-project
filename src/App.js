@@ -54,7 +54,8 @@ export default function App() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        marginBottom: "25px"
+        marginBottom: "25px",
+        padding: "10px"
     }
 
     let sortingAlgoToRun = ""
@@ -346,6 +347,12 @@ export default function App() {
     
     const arrayEls = array.map( (value, index) => {
 
+        const arrayLen = array.length
+        let widthOfArrayEl = Math.floor(mainStyles.width/arrayLen)-1
+        if (arrayLen === 1 || arrayLen === 2) {
+            widthOfArrayEl = Math.floor(mainStyles.width/3) - 1
+        }
+
         const styles = {
             display: "flex",
             textAlign: "center",
@@ -356,7 +363,7 @@ export default function App() {
             backgroundColor: isSorted ? "red" : "blue",
             display: "inline-block",
             margin: "3px",
-            width: "20px",
+            width: widthOfArrayEl,
             height: `${value * 4}px`
         }
 

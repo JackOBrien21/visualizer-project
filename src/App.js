@@ -17,8 +17,20 @@ export default function App() {
 
     const mainWidth = windowWidth*2/3
     const mainHeight = mainWidth*2/3
-    const maxNumberOfArrayEls = 500    
+    const maxNumberOfArrayEls = 500   
+    
+    const mainStyles = {
+        backgroundColor: "white",
+        height: mainHeight,
+        width: mainWidth,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        marginBottom: "25px",
+        padding: "25px"
+    }
 
+    
     React.useEffect( () => {
         function watchWidth() {
             setWindowWidth(window.innerWidth)
@@ -46,16 +58,7 @@ export default function App() {
         setIsRunning(false)
     }, [selectedTab])
 
-    const mainStyles = {
-        backgroundColor: "white",
-        height: mainHeight,
-        width: mainWidth,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        marginBottom: "25px",
-        padding: "25px"
-    }
+    
 
     let sortingAlgoToRun = ""
     if (selectedTab !== -1) {
@@ -84,7 +87,7 @@ export default function App() {
         const initialNumberOfArrayEls = 25
         const newArray = []
         for (let i = 0; i < initialNumberOfArrayEls; i++) {
-            newArray.push(getRandomInt(10, 100))
+            newArray.push(getRandomInt(10, 1000))
         }
         return newArray
     }
@@ -93,7 +96,7 @@ export default function App() {
         const numSliderEl = document.getElementById("num")
         const newArray = []
         for (let i = 0; i < numSliderEl.value; i++) {
-            newArray.push(getRandomInt(10, 150))
+            newArray.push(getRandomInt(10, 1000))
         }
         setIsSorted(() => sorted(newArray))
         return newArray
@@ -373,11 +376,14 @@ export default function App() {
             marginOfArrayEl = marginOfArrayEl - .05
             totalWidthOfArrayEls = (arrayLen*widthOfArrayEl) + (arrayLen*marginOfArrayEl)
         }
+        if (arrayLen < 10) {
+            marginOfArrayEl = 3
+        }
 
         let showText = (arrayLen > 40) ? false : true
         let showBorder = (arrayLen > 200) ? false : true
 
-        let heightVal = Math.floor(mapOneRangeToAnother(value, 10, 150, 10, mainStyles.height-25, 0))
+        let heightVal = Math.floor(mapOneRangeToAnother(value, 10, 1000, 10, mainStyles.height-25, 0))
 
         const styles = {
             textAlign: "center",

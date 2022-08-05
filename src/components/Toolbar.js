@@ -43,8 +43,8 @@ export default function Toolbar(props) {
                     <input className="number--slider" onChange={props.numberSliderChange} type="range" id="num" name="num" min="1" max={props.maxNumberOfArrayEls} />
                 </form>
                 <form className="speed--slider--container">
-                    <label className="speed--slider--range" for="vol">Number of swaps / second (between 1 and 50): {Math.floor(1000 / props.speed)}</label>
-                    <input className="speed--slider" onChange={props.speedSliderChange} type="range" id="speed" name="speed" min="1" max="50" />
+                    <label className="speed--slider--range" for="vol">Number of swaps / second (between 1 and 100): {Math.floor(1000 / props.speed)}</label>
+                    <input className="speed--slider" onChange={props.speedSliderChange} type="range" id="speed" name="speed" min="1" max="100" />
                 </form>
             </div>
             <div className="algorithms">

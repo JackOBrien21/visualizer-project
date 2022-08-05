@@ -22,8 +22,9 @@ body {
 
 .number--slider--range {
     color: #00D8FF;
+    white-space: nowrap;
     width: 330px;
-    margin-right: 5px;
+    margin-right:25px;
 }
 
 .speed--slider--container {
@@ -32,12 +33,13 @@ body {
 
 .speed--slider--range {
     color: #00D8FF;
+    white-space: nowrap;
     width: 330px;
-    margin-right: 5px;
+    margin-right: 25px;
 }
 
 .sliders {
-    margin-right: 5px;
+    margin-right: 15px;
 }
 
 .app {
@@ -63,10 +65,6 @@ body {
     color: #00D8FF;
     margin-right: 35px;
     cursor: pointer;
-}
-
-.arrayEl {
-   color: red; 
 }
 
 .algorithms {

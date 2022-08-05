@@ -9,16 +9,16 @@ export default function App() {
     const[selectedTab, setSelectedTab] = React.useState(-1)
     const[isRunning, setIsRunning] = React.useState(false)
     const[windowWidth, setWindowWidth] = React.useState(window.innerWidth)
-    const[speed, setSpeed] = React.useState(250)
+    const[speed, setSpeed] = React.useState(100)
     const isRunningRef = React.useRef(isRunning)
     const isSortedInitial = sorted(array)
     const[isSorted, setIsSorted] = React.useState(isSortedInitial)
     const isSortedRef = React.useRef(isSorted)
 
-    const widthOfArrayEls = 26
     const mainWidth = windowWidth*2/3
     const mainHeight = mainWidth*2/3
-    const maxNumberOfArrayEls = Math.floor(mainWidth/widthOfArrayEls) - 1
+    const maxNumberOfArrayEls = 500
+    
 
     React.useEffect( () => {
         function watchWidth() {
@@ -348,31 +348,40 @@ export default function App() {
     const arrayEls = array.map( (value, index) => {
 
         const arrayLen = array.length
+
         let widthOfArrayEl = Math.floor(mainStyles.width/arrayLen)-1
+        let marginOfArrayEl = .5
         if (arrayLen === 1 || arrayLen === 2) {
             widthOfArrayEl = Math.floor(mainStyles.width/3) - 1
         }
+        let totalWidthOfArrayEls = (arrayLen*widthOfArrayEl) + (arrayLen*marginOfArrayEl)
+        while (totalWidthOfArrayEls > mainStyles.width) {
+            marginOfArrayEl = marginOfArrayEl - .1
+            totalWidthOfArrayEls = (arrayLen*widthOfArrayEl) + (arrayLen*marginOfArrayEl)
+        }
+
+        let showText = (arrayLen > 40) ? false : true
+        let showBorder = (arrayLen > 200) ? false : true
 
         const styles = {
-            display: "flex",
             textAlign: "center",
             color: "yellow",
             borderColor: "black",
-            borderStyle: "solid",
-            borderWidth: ".5px",
+            borderStyle: showBorder ? "solid" : "none",
+            borderWidth: showBorder ? ".5px":  "0px",
             backgroundColor: isSorted ? "red" : "blue",
             display: "inline-block",
-            margin: "3px",
+            margin: marginOfArrayEl,
             width: widthOfArrayEl,
             height: `${value * 4}px`
         }
 
-        return <div style={styles} key={index} className="arrayEl">{value}</div> 
+        return <div style={styles} key={index} className="arrayEl">{showText && value}</div> 
     })
 
     return (
         <div className="app">
-            <Toolbar handleNewArray={generateNewRandomArray} handleSwapFirstLast={changeArray} handleSort={handleAlgoFunctionCall} selectedTab={selectedTab} setSelectedTab={setSelectedTab} showStop={isRunning} handleStop={stopAlgo} maxNumberOfArrayEls={maxNumberOfArrayEls} numberSliderChange={handleNumberSliderChange} speedSliderChange={handleSpeedSliderChange} speed={speed} mainWidth={mainWidth} widthOfArrayEls={widthOfArrayEls} length = {array.length}/>
+            <Toolbar handleNewArray={generateNewRandomArray} handleSwapFirstLast={changeArray} handleSort={handleAlgoFunctionCall} selectedTab={selectedTab} setSelectedTab={setSelectedTab} showStop={isRunning} handleStop={stopAlgo} maxNumberOfArrayEls={maxNumberOfArrayEls} numberSliderChange={handleNumberSliderChange} speedSliderChange={handleSpeedSliderChange} speed={speed} mainWidth={mainWidth} length = {array.length}/>
             <Main style={mainStyles} showTag={isShown} nums={arrayEls}/>
         </div>
     )

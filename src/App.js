@@ -17,7 +17,7 @@ export default function App() {
 
     const mainWidth = windowWidth*2/3
     const mainHeight = mainWidth*2/3
-    
+    const maxNumberOfArrayEls = 500    
 
     React.useEffect( () => {
         function watchWidth() {

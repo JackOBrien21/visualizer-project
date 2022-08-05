@@ -82,7 +82,7 @@ export default function App() {
     }
 
     function generateFirstArray() {
-        const initialNumberOfArrayEls = 14
+        const initialNumberOfArrayEls = 25
         const newArray = []
         for (let i = 0; i < initialNumberOfArrayEls; i++) {
             newArray.push(getRandomInt(10, 100))

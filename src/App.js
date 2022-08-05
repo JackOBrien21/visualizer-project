@@ -17,7 +17,7 @@ export default function App() {
 
     const mainWidth = windowWidth*2/3
     const mainHeight = mainWidth*2/3
-    const maxNumberOfArrayEls = 500
+    const maxNumberOfArrayEls = 600
     
 
     React.useEffect( () => {
@@ -55,7 +55,7 @@ export default function App() {
         justifyContent: "center",
         alignItems: "center",
         marginBottom: "25px",
-        padding: "10px"
+        padding: "25px"
     }
 
     let sortingAlgoToRun = ""
@@ -344,6 +344,21 @@ export default function App() {
     function handleAlgoFunctionCall() {
         setIsRunning(true);
     }
+
+    function mapValueToHeight(val) {
+
+    }
+
+    function mapOneRangeToAnother(sourceNumber, fromA, fromB, toA, toB, decimalPrecision) {
+        let deltaA = fromB - fromA
+        let deltaB = toB - toA
+        let scale  = deltaB / deltaA
+        let negA   = -1 * fromA
+        let offset = (negA * scale) + toA
+        let finalNumber = (sourceNumber * scale) + offset
+        let calcScale = Math.floor(Math.pow(10, decimalPrecision))
+        return Math.round(finalNumber * calcScale) / calcScale
+    }
     
     const arrayEls = array.map( (value, index) => {
 
@@ -356,12 +371,14 @@ export default function App() {
         }
         let totalWidthOfArrayEls = (arrayLen*widthOfArrayEl) + (arrayLen*marginOfArrayEl)
         while (totalWidthOfArrayEls > mainStyles.width) {
-            marginOfArrayEl = marginOfArrayEl - .1
+            marginOfArrayEl = marginOfArrayEl - .05
             totalWidthOfArrayEls = (arrayLen*widthOfArrayEl) + (arrayLen*marginOfArrayEl)
         }
 
         let showText = (arrayLen > 40) ? false : true
         let showBorder = (arrayLen > 200) ? false : true
+
+        let heightVal = Math.floor(mapOneRangeToAnother(value, 10, 150, 10, mainStyles.height-25, 0))
 
         const styles = {
             textAlign: "center",
@@ -373,7 +390,7 @@ export default function App() {
             display: "inline-block",
             margin: marginOfArrayEl,
             width: widthOfArrayEl,
-            height: `${value * 4}px`
+            height: `${heightVal}px`
         }
 
         return <div style={styles} key={index} className="arrayEl">{showText && value}</div> 

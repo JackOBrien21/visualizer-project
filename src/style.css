@@ -27,6 +27,10 @@ body {
     margin-right:25px;
 }
 
+.number--slider {
+    width: 175px;
+}
+
 .speed--slider--container {
     display: flex;
 }
@@ -36,6 +40,10 @@ body {
     white-space: nowrap;
     width: 330px;
     margin-right: 25px;
+}
+
+.speed--slider {
+    width: 175px;
 }
 
 .sliders {

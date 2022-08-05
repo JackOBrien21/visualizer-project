@@ -17,7 +17,6 @@ export default function App() {
 
     const mainWidth = windowWidth*2/3
     const mainHeight = mainWidth*2/3
-    const maxNumberOfArrayEls = 600
     
 
     React.useEffect( () => {

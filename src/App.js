@@ -58,7 +58,9 @@ export default function App() {
         setIsRunning(false)
     }, [selectedTab])
 
-    
+    React.useEffect( () => {
+        document.title = "Sorting Visualizer"
+    }, [])
 
     let sortingAlgoToRun = ""
     if (selectedTab !== -1) {
